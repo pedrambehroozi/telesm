@@ -41,6 +41,14 @@ def list_words():
     conn.close()
     return words
 
+def get_random_word():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT word, definition, examples FROM words ORDER BY RANDOM() LIMIT 1')
+    word = cursor.fetchone()
+    conn.close()
+    return word
+
 def format_word_with_definition_and_examples(word, definition, examples=[]):
     if examples:
         if type(examples) is str:
@@ -106,6 +114,7 @@ def parse_args():
     parser.add_argument('--list', action='store_true', help='List all saved words')
     parser.add_argument('--navigate', action='store_true', help='Navigate through saved words')
     parser.add_argument('--no-save', action='store_true', help='Do not save the searched word in the database')
+    parser.add_argument('--random', action='store_true', help='Display a random word from the database')
     return parser.parse_args()
 
 def main():
@@ -128,6 +137,12 @@ def main():
         print(format_word_with_definition_and_examples(args.word, definition, examples))
         if not args.no_save:
             save_word(args.word, definition, examples)
+    elif args.random:
+        random_word = get_random_word()
+        if not random_word:
+            print("No word could be found in the database.")
+            exit(0)
+        print(format_word_with_definition_and_examples(random_word[0], random_word[1], random_word[2]))
 
 if __name__ == "__main__":
     init_db()
