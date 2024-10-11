@@ -42,3 +42,15 @@ If you want to navigate over the words one by one, pass `--navigate` argument:
 ```bash
 telesm --list --navigate
 ```
+
+You can get a random word from the database:
+
+```bash
+telesm --random
+
+# Example output:
+accruing:
+        ‣ grow by addition
+Examples:
+        ⁃ The interest accrues
+```
