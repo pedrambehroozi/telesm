@@ -101,7 +101,7 @@ def get_word_definition(word):
     synsets = wn.synsets(word)
 
     if not synsets:
-        return f"No definition found for '{word}'"
+        return False, None
     
     definition = synsets[0].definition()
     examples = synsets[0].examples()
@@ -134,6 +134,9 @@ def main():
                     print("---")
     elif args.word:
         definition, examples = get_word_definition(args.word.strip().lower())
+        if definition == False:
+            print(f"No definition found for '{args.word}'")
+            exit(0)
         print(format_word_with_definition_and_examples(args.word, definition, examples))
         if not args.no_save:
             save_word(args.word, definition, examples)
