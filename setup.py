@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='telesm',
-    version='0.0.4',
+    version='0.0.5',
     description='A command-line dictionary app using WordNet',
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
