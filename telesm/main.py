@@ -87,8 +87,21 @@ def parse_args():
                         help='Do not save the searched word in the database')
     parser.add_argument('--random', action='store_true',
                         help='Display a random word from the database')
-    parser.add_argument('--delete', type=str, help='Deletes a word', metavar="<string>")
+    parser.add_argument('--delete', type=str,
+                        help='Deletes a word', metavar="<string>")
+    parser.add_argument(
+        '--search', type=str, help='Full-Text search for a keyword in the database, including word, its definition and exampes', metavar='<string>')
     return parser.parse_args()
+
+
+def print_considering_navigation(words, should_navigate=True):
+    if should_navigate:
+        display_words_with_navigation(words)
+    else:
+        for word, definition, examples in words:
+            print(format_word_with_definition_and_examples(
+                word, definition, examples))
+            print("---")
 
 
 def main():
@@ -99,13 +112,8 @@ def main():
             print("No words saved yet.")
             exit(0)
         else:
-            if args.navigate:
-                display_words_with_navigation(saved_words)
-            else:
-                for word, definition, examples in saved_words:
-                    print(format_word_with_definition_and_examples(
-                        word, definition, examples))
-                    print("---")
+            print_considering_navigation(
+                saved_words, should_navigate=args.navigate)
     elif args.word:
         definition, examples = get_word_definition(args.word.strip().lower())
         if definition == False:
@@ -125,8 +133,15 @@ def main():
     elif args.delete:
         try:
             db.delete_word(args.delete)
-            print(f"'{args.delete} is deleted.")
+            print(f"'{args.delete}' is deleted.")
             exit(0)
         except Exception:
             print("An unexpected error occured. Please try again.")
             exit(1)
+    elif args.search:
+        words = db.search(args.search)
+        if not words:
+            print(f"Nothing found for '{args.search}'.")
+            exit(0)
+        else:
+            print_considering_navigation(words, should_navigate=args.navigate)

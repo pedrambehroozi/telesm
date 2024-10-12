@@ -25,7 +25,7 @@ pipx install telesm
 
 ## Usage
 
-- To search for a meaning of a word:
+### Definition of a word
 
 ```bash
 telesm <word>
@@ -41,7 +41,7 @@ This will save the word to the database by default, if you don't want to save th
 telesm <word> --no-save
 ```
 
-- To list all the saved words:
+### List all words
 
 ```bash
 telesm --list
@@ -53,7 +53,7 @@ If you want to navigate over the words one by one, pass `--navigate` argument:
 telesm --list --navigate
 ```
 
-You can get a random word from the database:
+### Random word
 
 ```bash
 telesm --random
@@ -63,4 +63,14 @@ accruing:
         ‣ grow by addition
 Examples:
         ⁃ The interest accrues
+```
+
+### Search in saved words
+
+```bash
+telesm --search tal
+
+# Example output:
+talisman:
+        ‣ a trinket or piece of jewelry usually hung about the neck and thought to be a magical protection against evil or disease
 ```
