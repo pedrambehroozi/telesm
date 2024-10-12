@@ -17,12 +17,22 @@ Using `pip`:
 pip install telesm
 ```
 
+Or if you want to have it globally:
+
+```bash
+pipx install telesm
+```
+
 ## Usage
 
 - To search for a meaning of a word:
 
 ```bash
 telesm <word>
+
+# Example output:
+talisman:
+        ‣ a trinket or piece of jewelry usually hung about the neck and thought to be a magical protection against evil or disease
 ```
 
 This will save the word to the database by default, if you don't want to save the word pass `--no-save` argument.

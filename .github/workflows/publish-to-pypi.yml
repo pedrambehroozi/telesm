@@ -28,4 +28,6 @@ jobs:
             python -m pip install --upgrade twine
             twine upload dist/*
         - name: Verify package
-          run: pip install telesm
+          run: |
+            pip install telesm
+            telesm talisman
