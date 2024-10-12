@@ -87,6 +87,7 @@ def parse_args():
                         help='Do not save the searched word in the database')
     parser.add_argument('--random', action='store_true',
                         help='Display a random word from the database')
+    parser.add_argument('--delete', type=str, help='Deletes a word', metavar="<string>")
     return parser.parse_args()
 
 
@@ -121,3 +122,11 @@ def main():
             exit(0)
         print(format_word_with_definition_and_examples(
             random_word[0], random_word[1], random_word[2]))
+    elif args.delete:
+        try:
+            db.delete_word(args.delete)
+            print(f"'{args.delete} is deleted.")
+            exit(0)
+        except Exception:
+            print("An unexpected error occured. Please try again.")
+            exit(1)

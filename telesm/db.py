@@ -58,3 +58,11 @@ class Database:
         word = self.cursor.fetchone()
         self.connection.close()
         return word
+
+    def delete_word(self, word):
+        self.connect()
+        self.cursor.execute(
+            'DELETE FROM words where word=?', (word,)
+        )
+        self.connection.commit()
+        self.connection.close()
