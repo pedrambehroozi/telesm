@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='telesm',
-    version='0.0.5',
+    version='0.0.6',
     description='A command-line dictionary app using WordNet',
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
@@ -13,7 +13,7 @@ setup(
     install_requires=['nltk'],
     entry_points={
         'console_scripts': [
-            'telesm=telesm.main:main',
+            'telesm=telesm.__main__:main',
         ],
     },
     classifiers=[
