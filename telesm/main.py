@@ -5,7 +5,7 @@ from nltk.corpus import wordnet as wn
 import argparse
 import os
 import curses
-from db import Database
+from telesm.db import Database
 
 DB_FILE = os.path.expanduser('~/.telesm.db')
 db = Database(DB_FILE)
@@ -121,7 +121,3 @@ def main():
             exit(0)
         print(format_word_with_definition_and_examples(
             random_word[0], random_word[1], random_word[2]))
-
-
-if __name__ == "__main__":
-    main()
