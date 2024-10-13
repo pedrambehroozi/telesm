@@ -71,7 +71,7 @@ class Database:
             'SELECT word, definition, examples FROM words WHERE word=?', (word_to_search,))
         word = self.cursor.fetchone()
         self.connection.close()
-        return word
+        return self.process_words([word])[0]
 
     def get_random_word(self):
         self.connect()
@@ -79,7 +79,7 @@ class Database:
             'SELECT word, definition, examples FROM words ORDER BY RANDOM() LIMIT 1')
         word = self.cursor.fetchone()
         self.connection.close()
-        return word
+        return self.process_words([word])[0]
 
     def delete_word(self, word):
         self.connect()
