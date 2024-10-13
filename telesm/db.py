@@ -71,7 +71,7 @@ class Database:
             'SELECT word, definition, examples FROM words WHERE word=?', (word_to_search,))
         word = self.cursor.fetchone()
         self.connection.close()
-        return self.process_words([word])[0]
+        return self.process_words([word])[0] if word else False
 
     def get_random_word(self):
         self.connect()
