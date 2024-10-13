@@ -29,5 +29,6 @@ jobs:
             twine upload dist/*
         - name: Verify package
           run: |
+            sleep(3)
             pip install telesm
             telesm talisman
