@@ -6,6 +6,7 @@ import argparse
 import os
 import curses
 from telesm.db import Database
+from telesm.ai import Ai
 
 DB_FILE = os.path.expanduser('~/.telesm.db')
 db = Database(DB_FILE)
@@ -61,11 +62,21 @@ def display_words_with_navigation(saved_words):
     curses.wrapper(navigate_words)
 
 
-def get_word_definition(word):
+def get_word_definition(word, from_ai=False):
     from_database = db.get_by_word(word)
     if from_database:
         (word, definition, examples) = from_database
     else:
+        if from_ai:
+            try:
+                response, examples, status = Ai().get_definition(word)
+                if status == 200:
+                    return response, examples
+                else:
+                    return None
+            except Exception as e:
+                print(e)
+                exit(1)
         nltk.download('wordnet', quiet=True)
         synsets = wn.synsets(word)
         if not synsets:
@@ -91,6 +102,9 @@ def parse_args():
                         help='Deletes a word', metavar="<string>")
     parser.add_argument(
         '--search', type=str, help='Full-Text search for a keyword in the database, including word, its definition and exampes', metavar='<string>')
+    parser.add_argument(
+        '--ai', type=str, help='Use OpenAPI to show the definition and etymology of the word (requires internet connection)'
+    )
     return parser.parse_args()
 
 
@@ -145,3 +159,12 @@ def main():
             exit(0)
         else:
             print_considering_navigation(words, should_navigate=args.navigate)
+    elif args.ai:
+        definition, examples = get_word_definition(args.ai, from_ai=True)
+        if definition:
+            print(format_word_with_definition_and_examples(args.ai, definition, examples))
+            if not args.no_save:
+                db.save_word(args.ai, definition, examples)
+            exit(0)
+        print("Something went wrong. Please try again later.")
+        exit(1)
