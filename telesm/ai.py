@@ -1,7 +1,13 @@
 import requests
-import dotenv
 import os
 import json
+from telesm.env import Env
+
+
+class NoApiKeyException(Exception):
+    def __init__(self):
+        super().__init__("No Api Key could be found to connect to OpenAI")
+
 
 class OpenApiClient:
     def __init__(self, api_key):
@@ -13,7 +19,8 @@ class OpenApiClient:
         }
 
     def get_word_definition(self, word):
-        prompt = f"Provide the definition and couple of examples of the word '{word}'. Response in json."
+        prompt = f"Provide the definition and couple of examples of the word '{
+            word}'. Response in json."
 
         data = {
             'model': 'gpt-3.5-turbo',
@@ -25,28 +32,24 @@ class OpenApiClient:
         response_json = response.json()
 
         if response.status_code == 200:
-            content = json.loads(response_json['choices'][0]['message']['content'])
+            content = json.loads(
+                response_json['choices'][0]['message']['content'])
             return content["definition"], content["examples"], 200
         else:
             return response.json(), None, response.status_code
 
+
 class Ai:
     def __init__(self):
-        self.init_env()
+        self.init_api_key()
         self.client = OpenApiClient(self.api_key)
-        
-    def init_env(self):
-        env_path = './.env'
-        if not os.path.exists(env_path):
-            env_path = os.path.expanduser('~/.telesm.conf')
-            if not os.path.exists(env_path):
-                raise Exception("No API Key could be found.")
-        
-        dotenv.load_dotenv(env_path)
+
+    def init_api_key(self):
+        Env().load_env()
         api_key = os.getenv("OPENAPI_API_KEY")
         if not api_key:
-            raise Exception(f"Please specify your api key in {env_path}")
+            raise NoApiKeyException()
         self.api_key = api_key
-        
+
     def get_definition(self, word):
         return self.client.get_word_definition(word)
