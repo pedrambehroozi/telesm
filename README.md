@@ -100,6 +100,12 @@ Now you can use the AI feature:
 telesm --ai <word>
 ```
 
+You can set `AI_FIRST=1` to `~/.telesm.conf` file to use AI without the need to pass `--ai` argument:
+
+```bash
+telesm <word> # Would use AI now
+```
+
 This will also save the word in the database so you'd have it offline for future uses. Pass `--no-save` if you don't want to save it.
 
-If you already searched for a word without using AI and saved the word in the database, passing `--ai` would not have any effects. Try deleting the word by running `telesm --delete <word>` and try again.
+If you already searched for a word without using AI and saved the word in the database, passing `--ai` would not have any effects. Try deleting the word by running `telesm --delete <word>` and try again in case you prefer to have the AI definition instead.

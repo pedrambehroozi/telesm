@@ -1,4 +1,5 @@
 import nltk
+import os
 from nltk.corpus import wordnet as wn
 from telesm.ai import Ai
 from telesm.decorators import Printer
@@ -16,33 +17,33 @@ class List():
 
 
 class DefineAI():
-    def __init__(self, args, db):
+    def __init__(self, word, args, db):
         try:
-            response, examples, status = Ai().get_definition(args.ai)
+            response, examples, status = Ai().get_definition(word)
             if status != 200:
                 print("Something went wrong. Please try again later.")
                 exit(1)
 
-            Printer().print_words([(args.ai.strip(), response, examples)])
+            Printer().print_words([(word.strip(), response, examples)])
             if not args.no_save:
-                db.save_word(args.ai, response, examples)
+                db.save_word(word, response, examples)
         except Exception as e:
             Printer().print(e)
             exit(1)
 
 
 class DefineWordNet():
-    def __init__(self, args, db):
+    def __init__(self, word, args, db):
         nltk.download('wordnet', quiet=True)
-        synsets = wn.synsets(args.word.strip().lower())
+        synsets = wn.synsets(word.strip().lower())
         if not synsets:
-            Printer().print(f"No definition found for '{args.word}'")
+            Printer().print(f"No definition found for '{word}'")
             exit(0)
         definition = synsets[0].definition()
         examples = synsets[0].examples()
-        Printer().print_words([(args.word, definition, examples)])
+        Printer().print_words([(word, definition, examples)])
         if not args.no_save:
-            db.save_word(args.word, definition, examples)
+            db.save_word(word, definition, examples)
 
 
 class Define():
@@ -54,10 +55,10 @@ class Define():
             Printer().print_words([word])
             exit(0)
 
-        if args.ai:
-            DefineAI(args, db)
+        if args.ai or os.getenv("AI_FIRST", "0") == "1":
+            DefineAI(word_to_search, args, db)
         else:
-            DefineWordNet(args, db)
+            DefineWordNet(word_to_search, args, db)
 
 
 class RandomWord():
