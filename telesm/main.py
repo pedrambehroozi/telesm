@@ -4,9 +4,9 @@ import argparse
 import os
 from telesm.db import Database
 from telesm import operations
+from telesm.env import Env
 
-DB_FILE = os.path.expanduser('~/.telesm.db')
-db = Database(DB_FILE)
+
 
 
 def parse_args():
@@ -32,5 +32,8 @@ def parse_args():
 
 
 def main():
+    Env().load_env()
+    DB_FILE = os.path.expanduser('~/.telesm.db')
+    db = Database(DB_FILE)
     args = parse_args()
     operations.Perform(args, db)
