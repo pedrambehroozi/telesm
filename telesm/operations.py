@@ -47,7 +47,13 @@ class DefineWordNet():
 
 class Define():
     def __init__(self, args, db):
-        # TODO read the word from the database first
+        word_to_search = args.word if args.word else args.ai
+        word = db.get_by_word(word_to_search)
+
+        if word:
+            Printer().print_words([word])
+            exit(0)
+
         if args.ai:
             DefineAI(args, db)
         else:
@@ -61,7 +67,7 @@ class RandomWord():
             Printer().print("No word could be found in the database.")
             exit(0)
 
-        Printer().print_words([random_word[0], random_word[1], random_word[2]])
+        Printer().print_words([random_word])
 
 
 class DeleteWord():
@@ -91,6 +97,7 @@ class Perform():
     args_to_operations = {
         'list': List,
         'word': Define,
+        'ai': Define,
         'random': RandomWord,
         'delete': DeleteWord,
         'search': SearchInDatabase,
