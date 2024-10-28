@@ -1,6 +1,7 @@
 import requests
 import dotenv
 import os
+import json
 
 class OpenApiClient:
     def __init__(self, api_key):
@@ -12,7 +13,7 @@ class OpenApiClient:
         }
 
     def get_word_definition(self, word):
-        prompt = f"Provide the definition and couple of examples of the word '{word}'. Response in this format: <definition>|<examples>. Concat examples with @"
+        prompt = f"Provide the definition and couple of examples of the word '{word}'. Response in json."
 
         data = {
             'model': 'gpt-3.5-turbo',
@@ -24,9 +25,8 @@ class OpenApiClient:
         response_json = response.json()
 
         if response.status_code == 200:
-            content = response_json['choices'][0]['message']['content']
-            definition, examples = content.split('|')
-            return definition, examples.split('@'), 200
+            content = json.loads(response_json['choices'][0]['message']['content'])
+            return content["definition"], content["examples"], 200
         else:
             return response.json(), None, response.status_code
 
