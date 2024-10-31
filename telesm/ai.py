@@ -9,7 +9,7 @@ class NoApiKeyException(Exception):
         super().__init__("No Api Key could be found to connect to OpenAI")
 
 
-class OpenApiClient:
+class OpenAiClient:
     def __init__(self, api_key):
         self.api_key = api_key
         self.api_url = 'https://api.openai.com/v1/chat/completions'
@@ -42,11 +42,11 @@ class OpenApiClient:
 class Ai:
     def __init__(self):
         self.init_api_key()
-        self.client = OpenApiClient(self.api_key)
+        self.client = OpenAiClient(self.api_key)
 
     def init_api_key(self):
         Env().load_env()
-        api_key = os.getenv("OPENAPI_API_KEY")
+        api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
             raise NoApiKeyException()
         self.api_key = api_key

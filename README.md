@@ -91,7 +91,7 @@ To use AI feature you need to specify your OpenAI api key in `~/.telesm.conf` fi
 2. Acquire your api key from OpenAi [Dashboard](https://platform.openai.com/api-keys).
 3. Put your api key in the config file:
 
-        OPENAPI_API_KEY="<your-api-key>"
+        OPENAI_API_KEY="<your-api-key>"
 
 
 Now you can use the AI feature:
