@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument(
         '--search', type=str, help='Full-Text search for a keyword in the database, including word, its definition and exampes', metavar='<string>')
     parser.add_argument(
-        '--ai', type=str, help='Use OpenAPI to show the definition and etymology of the word (requires internet connection)'
+        '--ai', type=str, help='Use OpenAI to show the definition and etymology of the word (requires internet connection)'
     )
     return parser.parse_args()
 
